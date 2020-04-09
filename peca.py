@@ -15,6 +15,10 @@ class Peca:
         #Peso para a árvore de decisão, caso seja feita
         self.peso = 1
 
+    def getDiagonais(self):
+        #Retorna uma lista com todas as diagonais da peça
+        return [self.esquerdaCima, self.direitaCima, self.esquerdaBaixo, self.direitaBaixo]
+
     def viraDama(self):
         #Atualiza a peça para uma dama e aumenta o peso dela para a árvore de decisão
         self.dama = True

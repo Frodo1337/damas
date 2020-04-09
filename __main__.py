@@ -12,7 +12,10 @@ if __name__ == "__main__":
 
     #Posiciona as peças no tabuleiro
     jogoDamas.createPecas()
-    #Printa o tabuleiro
-    jogoDamas.printa()
+
     #Atualiza para todas as peças as possíveis direções de movimento
     jogoDamas.atualizaMobilidadePecas()
+
+    vencedor = jogoDamas.joga()
+
+    print("O jogador " + str(vencedor) + " ganhou o jogo")
