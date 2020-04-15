@@ -2,6 +2,8 @@
 
 import sys
 
+from node import Node
+from tree import Tree
 from peca import Peca
 
 class Damas:
@@ -28,7 +30,7 @@ class Damas:
         #Esse laço não percorre o "meio" do tabuleiro, ele percorre primeiro de 0 a 3 e depois de 6 a 9.
         for n in range(2):
             for i in range(min, max):
-                for j in range(self.altura):
+                for j in range(self.largura):
                     if j % 2 == restoMod:
                         tabuleiro[i][j] = Peca(corAtual, [i, j])
                 if restoMod == 1:
@@ -209,6 +211,8 @@ class Damas:
                 elif i[1] == (self.altura - 1) and tabuleiroAtualizado[coordenadaAtual[0]][coordenadaAtual[1]].cor == self.cores[0]:
                     tabuleiroAtualizado[coordenadaAtual[0]][coordenadaAtual[1]].viraDama()
 
+            #Remove a peça da posição anterior dela
+            tabuleiroAtualizado[coordenadaAtual[0]][coordenadaAtual[1]] = None
             #Atualiza a posição da peça sendo jogada
             coordenadaAtual = i
             #Atualiza o tabuleiro com a coordenada da peça
@@ -220,9 +224,6 @@ class Damas:
 
             #Atualiza as jogadas possíveis da peça atual
             diagonaisAtuais = tabuleiroAtualizado[coordenadaAtual[0]][coordenadaAtual[1]].getDiagonais()
-            #Remove a posição anterior da pela
-            tabuleiroAtualizado[coordenadaAtual[0]][coordenadaAtual[1]] = None
-
 
         #Caso existam peças a serem removidas, elas serão subsitituidas por nulo
         if len(removidas) > 0:
@@ -234,8 +235,7 @@ class Damas:
 
     def melhorJogada(self, jogadas):
         #Define qual será a melhor jogada, deverá retornar a peça a ser movida e as coordenadas dos movimentos numa lista
-        #peca = self.tabuleiro[6][3]
-        #coordenadasMovimentosPeca = [[4, 0]]
+        arvores = []
 
         peca = self.tabuleiro[3][2]
         coordenadasMovimentosPeca = [[4, 1], [5, 0]]
@@ -248,6 +248,7 @@ class Damas:
         #O jogadorAtual é o índice da lista de cores
         jogadorAtual = 1
 
+        self.atualizaMobilidadePecas()
         self.printa()
 
         while True:
