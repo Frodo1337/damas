@@ -9,9 +9,8 @@ if __name__ == "__main__":
     #Instancia um tabuleiro com as peças definidas acima
     jogoDamas = Damas(cores)
 
-    #Posiciona as peças no tabuleiro
-    jogoDamas.createPecas()
-
     vencedor = jogoDamas.joga()
 
     print("O jogador " + str(vencedor) + " ganhou o jogo")
+
+    #jogoDamas.tabuleiro.printa()
