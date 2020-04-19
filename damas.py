@@ -8,14 +8,17 @@ from peca import Peca
 from tabuleiro import Tabuleiro
 
 class Damas:
-    def __init__(self, cores):
+    def __init__(self, cores, inter):
         self.cores = cores
         #Tabuleiro, não tem muito oq falar, é o tabuleiro mesmo, usa nulo para casas vazias
         self.tabuleiro = Tabuleiro(cores)
         #-1: jogo em andamento, 0: vitória do jogador 2, 1: vitória do jogador 1, 3: empate
         self.estado = -1
         #Posiciona as peças no tabuleiro
-        self.tabuleiro.createPecas()
+        self.inter = inter
+        self.tabuleiro.criarTabuleiro(self.inter)
+        self.tabuleiro.createPecas(self.inter)
+
 
     def contaPecas(self, jogador):
         count = 0
