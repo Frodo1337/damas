@@ -10,33 +10,39 @@ class Tabuleiro:
         self.altura = 10
         self.largura = 10
 
-    def createPecas(self):
-        min = 0
-        max = 4
-        restoMod = 1
-        corAtual = self.cores[0]
-        #Cria uma lista de listas para ser o conteúdo do tabuleiro e preeche todas as posições com nulo
-        casas = [[None for j in range(self.largura)] for i in range(self.altura)]
+    def criarTabuleiro(self, inter):
+        self.casas = [[None for j in range(self.largura)] for i in range(self.altura)]
+        inter.criarTabuleiroI()  # cria interface do tabuleiro
+        inter.plotarInterface()
 
-        #Nesse laço existem dois passos, o primeiro que irá colocar as peças de forma casa sim e casa não para
-        #o primeiro lado do tabuleiro, o lado de cima, nesse caso será preenchido com X.
-        #O segundo passo preenche o outro lado do tabuleiro com as peças restantes, nesse caso será 0.
-        #Esse laço não percorre o "meio" do tabuleiro, ele percorre primeiro de 0 a 3 e depois de 6 a 9.
-        for n in range(2):
-            for i in range(min, max):
-                for j in range(self.largura):
-                    if j % 2 == restoMod:
-                        casas[i][j] = Peca(corAtual, [i, j])
-                if restoMod == 1:
-                    restoMod = 0
+    def createPecas(self, inter):
+        self.criarPecasJogador(0, 4, self.cores[0])
+        inter.colocar_pecas_player1()
+        self.criarPecasJogador(6, 10, self.cores[1])
+        inter.colocar_pecas_player2()
+        inter.plotarInterface()
+
+    def pula(self, bool):
+        if (bool == True):
+            return False
+        else:
+            return True
+
+    def criarPecasJogador(self, min, max, cor):
+        inverte = 1
+        apoio = False
+        for j in range(min, max):
+            for i in range(self.largura):
+                if (inverte % 2 == 0):
+                    if (apoio == False):
+                        self.casas[j][i] = Peca(cor, [j, i])
                 else:
-                    restoMod = 1
-            min = 6
-            max = 10
-            corAtual = self.cores[1]
+                    if (apoio == True):
+                        self.casas[j][i] = Peca(cor, [j, i])
 
-        #Atualiza o tabuleiro com o novo criado
-        self.casas = casas
+                apoio = self.pula(apoio)
+
+            inverte = inverte + 1
 
     def atualizaMobilidadePecas(self):
         #Faz uma cópia do tabuleiro para poder alterar ele com segurança
@@ -125,7 +131,7 @@ class Tabuleiro:
             casasAtualizadas[coordenadaAtual[0]][coordenadaAtual[1]] = None
             #Atualiza a posição da peça sendo jogada
             coordenadaAtual = i
-            #Atualiza o tabuleiro com a coordenada da peça
+            #Atualiza o tabuleiro com a coordenada da peça // colocar a peca no lugar novo
             casasAtualizadas[coordenadaAtual[0]][coordenadaAtual[1]] = Peca(peca.cor, coordenadaAtual)
 
             #Atualiza todos as jogadas possíveis de todas as peças do tabuleiro
@@ -135,10 +141,11 @@ class Tabuleiro:
             #Atualiza as jogadas possíveis da peça atual
             diagonaisAtuais = casasAtualizadas[coordenadaAtual[0]][coordenadaAtual[1]].getDiagonais()
 
-        #Caso existam peças a serem removidas, elas serão subsitituidas por nulo
+        #Caso existam peças a serem removidas, elas serão subsitituidas por nulo // utilizado para retirar da interface tambem
         if len(removidas) > 0:
             for i in removidas:
                 casasAtualizadas[i[0]][i[1]] = None
+
 
         #Atualiza o tabuleiro
         self.casas = casasAtualizadas
